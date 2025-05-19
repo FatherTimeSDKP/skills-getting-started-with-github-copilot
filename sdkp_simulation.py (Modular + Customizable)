@@ -1,0 +1,44 @@
+"""
+SDKP Modular Simulation - Scale–Density–Kinematic Principle (SDKP)
+Author: Donald Paul Smith ("Father Time")
+Date: 2025-05-19
+License: Custom License (17.5% Royalty, Sublicensable)
+"""
+
+import math
+
+# Constants
+G = 6.67430e-11        # Gravitational constant (m^3 kg^-1 s^-2)
+c = 299_792_458        # Speed of light (m/s)
+pi = math.pi
+
+def sdkp_simulate(radius_m, density_kg_m3, velocity_m_s, rotation_rad_s, label="Object"):
+    volume = (4/3) * pi * radius_m**3
+    mass = density_kg_m3 * volume
+    gravity_component = (G * mass) / (radius_m**2)
+    
+    kinetic_energy = 0.5 * mass * velocity_m_s**2
+    inertia = (2/5) * mass * radius_m**2
+    rotational_energy = 0.5 * inertia * rotation_rad_s**2
+    rel_velocity_component = (0.5 * velocity_m_s**2) / c**2
+    
+    time_dilation_factor = 1 / (1 + gravity_component + rel_velocity_component)
+
+    print(f"\nSDKP Simulation: {label}")
+    print("-" * 40)
+    print(f"Radius: {radius_m:.2e} m")
+    print(f"Density: {density_kg_m3:.2e} kg/m³")
+    print(f"Mass: {mass:.3e} kg")
+    print(f"Velocity: {velocity_m_s:.2e} m/s")
+    print(f"Rotation Rate: {rotation_rad_s:.2e} rad/s")
+    print(f"Gravitational Component: {gravity_component:.3e} m/s²")
+    print(f"Kinetic Energy: {kinetic_energy:.3e} J")
+    print(f"Rotational Energy: {rotational_energy:.3e} J")
+    print(f"Time Dilation Factor (SDKP): {time_dilation_factor:.6f}")
+    print("-" * 40)
+
+# Example Simulations
+sdkp_simulate(radius_m=6.371e6, density_kg_m3=5514, velocity_m_s=29780, rotation_rad_s=7.27e-5, label="Earth")
+sdkp_simulate(radius_m=1e4, density_kg_m3=1e17, velocity_m_s=2e6, rotation_rad_s=1000, label="Neutron Star")
+sdkp_simulate(radius_m=5.0, density_kg_m3=3000, velocity_m_s=7500, rotation_rad_s=0.01, label="Satellite")
+sdkp_simulate(radius_m=1e-9, density_kg_m3=1e3, velocity_m_s=3e2, rotation_rad_s=1e10, label="Quantum Particle")
