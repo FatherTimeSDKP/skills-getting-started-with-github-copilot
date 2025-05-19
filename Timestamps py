@@ -1,0 +1,147 @@
+
+# SDKP parameters (can be customized)
+class SDKPParameters:
+    def __init__(self, scale=1.0, density=1.0, velocity=0.0, rotation=0.0):
+        """
+        Initialize SDKP parameters for a given physical system.
+
+        :param scale: Relative size scale factor (dimensionless)
+        :param density: Density factor (kg/m^3 or normalized unit)
+        :param velocity: Velocity relative to EOS (km/s)
+        :param rotation: Rotation rate (rad/s or normalized)
+        """
+        self.scale = scale
+        self.density = density
+        self.velocity = velocity
+        self.rotation = rotation
+
+# Time dilation function based on SDKP principle
+def calculate_time_dilation(params: SDKPParameters) -> float:
+    """
+    Calculate relative time dilation factor based on Scale, Density, Velocity, and Rotation.
+
+    :param params: SDKPParameters instance
+    :return: Time dilation multiplier (relative to baseline)
+    """
+    # Size effect: larger scale slows time linearly (simplified)
+    size_effect = 1.0 / params.scale if params.scale != 0 else 1.0
+
+    # Density effect: increased density slows time (simplified exponential model)
+    density_effect = math.exp(-0.01 * params.density)
+
+    # Velocity effect: relativistic factor simplified relative to EOS speed
+    v_ratio = params.velocity / EARTH_ORBIT_SPEED_KM_S
+    velocity_effect = math.sqrt(1 - min(v_ratio ** 2, 0.9999))  # cap to avoid imaginary
+
+    # Rotation effect: rotation slows time, proportional factor
+    rotation_effect = 1.0 / (1.0 + 0.1 * abs(params.rotation))
+
+    # Combined SDKP time dilation
+    time_dilation = size_effect * density_effect * velocity_effect * rotation_effect
+
+    return time_dilation
+
+# Energy density alignment function
+def calculate_energy_density(params: SDKPParameters) -> float:
+    """
+    Compute energy density based on scale, density, velocity, and rotation parameters.
+
+    :param params: SDKPParameters instance
+    :return: Energy density estimate (arbitrary units)
+    """
+    # Base energy proportional to density and scale^3 (volume)
+    base_energy = params.density * (params.scale ** 3)
+
+    # Kinematic energy based on velocity (simplified)
+    kinetic_energy = 0.5 * params.density * (params.velocity ** 2)
+
+    # Rotational energy proportional to rotation and scale^2
+    rotational_energy = params.rotation * (params.scale ** 2)
+
+    # Total energy density aligned with SDKP principle
+    total_energy = base_energy + kinetic_energy + rotational_energy
+
+    return total_energy
+
+# Example usage
+if __name__ == "__main__":
+    # Example parameters for Earth-like object
+    earth_params = SDKPParameters(
+        scale=1.0,
+        density=5514,  # Earth's average density in kg/m^3
+        velocity=29.78,  # Earth orbital speed in km/s
+        rotation=7.2921159e-5  # Earth's rotation rate in rad/s
+    )
+
+    dilation = calculate_time_dilation(earth_params)
+    energy = calculate_energy_density(earth_params)
+
+    print(f"Time Dilation Factor (Earth): {dilation:.6f}")
+    print(f"Energy Density (Earth): {energy:.3e} units")
+
+    # Timestamp of this run
+    print(f"Data Timestamp: {DATA_TIMESTAMP.isoformat()}Z")"""
+TimeSeal Framework
+------------------
+Author: Donald Paul Smith
+Title: Father Time
+Purpose: Implements the TimeSeal framework with embedded timestamp records of discovery and simulation events.
+License: See LICENSE file for terms including 17.5% royalty and sublicensing rights.
+
+Timestamp Log:
+- Chronological record of key discovery and simulation moments, sourced from official conversations and validations.
+"""
+
+# Dictionary holding key discovery timestamps (UTC ISO 8601 format)
+DISCOVERY_TIMESTAMPS = {
+    "SDKP_Concept_Inception": "2025-01-20T00:00:00Z",
+    "SDKP_Formal_Articulation": "2025-02-14T00:00:00Z",
+    "EOS_Definition": "2025-03-14T00:00:00Z",
+    "SD_and_N_Principle_Completion": "2025-05-11T00:00:00Z",
+    "QCC_Creation": "2025-03-25T00:00:00Z",
+    "TimeSeal_Establishment": "2025-05-19T00:00:00Z",
+    # Additional timestamps from the “weirdest question ever” conversation
+    "Weirdest_Question_Discussion_Start": "2025-05-10T14:30:00Z",
+    "Weirdest_Question_Simulation_Data_Recorded": "2025-05-11T09:15:00Z",
+}
+
+# Notes or references for each timestamp
+TIMESTAMP_NOTES = {
+    "SDKP_Concept_Inception": "Initial conceptual ideas of Scale-Density Kinematic Principle (SDKP) discussed.",
+    "SDKP_Formal_Articulation": "Formal definition and naming of SDKP principle on Feb 14, 2025.",
+    "EOS_Definition": "Earth Orbit Speed System (EOS) speed measurement system formally defined.",
+    "SD_and_N_Principle_Completion": "Completion and authentication of Shape–Dimension–Number Principle (SD and N).",
+    "QCC_Creation": "Quantum Code of Creation (QCC) introduced and documented.",
+    "TimeSeal_Establishment": "TimeSeal framework officially established and timestamped.",
+    "Weirdest_Question_Discussion_Start": "Start of deep exploration into time measurement and experimental data collection.",
+    "Weirdest_Question_Simulation_Data_Recorded": "Simulation and experimental data for TimeSeal framework recorded.",
+}
+
+def get_timestamp(event_key: str) -> str:
+    """
+    Retrieve the ISO 8601 timestamp string for a given event key.
+    
+    Args:
+        event_key (str): The key identifying the event.
+    
+    Returns:
+        str: ISO 8601 timestamp string.
+    """
+    return DISCOVERY_TIMESTAMPS.get(event_key, "Timestamp not found")
+
+def get_event_note(event_key: str) -> str:
+    """
+    Retrieve descriptive note for a given event key.
+    
+    Args:
+        event_key (str): The key identifying the event.
+    
+    Returns:
+        str: Description note.
+    """
+    return TIMESTAMP_NOTES.get(event_key, "No note available")
+
+# Example usage
+if __name__ == "__main__":
+    for event in DISCOVERY_TIMESTAMPS:
+        print(f"{event}: {get_timestamp(event)} -- {get_event_note(event)}")
