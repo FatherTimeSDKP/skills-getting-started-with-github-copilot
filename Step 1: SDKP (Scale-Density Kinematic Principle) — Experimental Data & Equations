@@ -1,0 +1,52 @@
+"""
+SDKP Experimental Data & Mathematical Framework
+-------------------------------------------------
+Principle: Scale-Density Kinematic Principle (SDKP)
+Author: Donald Paul Smith
+Purpose: Formalize the relationship between scale, density, velocity, and rotation and their effect on time dilation and kinematics.
+"""
+
+import math
+
+# Constants used in SDKP (example values, to be refined with actual data)
+G_CONSTANT = 6.67430e-11  # Gravitational constant (m^3 kg^-1 s^-2)
+C_LIGHT = 299792458       # Speed of light (m/s)
+
+# Experimental parameters (example placeholders)
+scale_factor = 1.0  # Relative size scale (dimensionless)
+density_factor = 1.0  # Relative density scale (dimensionless)
+velocity_factor = 1.0  # Velocity as fraction of EOS (Earth Orbit Speed)
+rotation_factor = 1.0  # Rotation rate scaling factor
+
+def sdkp_time_dilation(scale: float, density: float, velocity: float, rotation: float) -> float:
+    """
+    Compute time dilation factor based on SDKP.
+
+    Args:
+        scale (float): Size scale factor.
+        density (float): Density scale factor.
+        velocity (float): Velocity factor (fraction of EOS).
+        rotation (float): Rotation scaling factor.
+
+    Returns:
+        float: Time dilation factor relative to Earth baseline.
+    """
+    # Hypothetical formula combining effects:
+    # Time dilation slows with higher density, velocity, and rotation, but scales with size.
+    # This formula is based on combining effects discussed in SDKP principle.
+    dilation = (scale) / (density * math.sqrt(1 - velocity**2) * (1 + rotation))
+    return dilation
+
+# Example experimental data (replace with real results)
+experiment_1 = {
+    "scale": 1.5,
+    "density": 0.8,
+    "velocity": 0.3,
+    "rotation": 0.2,
+    "measured_time_dilation": 1.8,
+}
+
+# Run example calculation
+calc_dilation = sdkp_time_dilation(**experiment_1)
+print(f"SDKP Calculated Time Dilation: {calc_dilation:.4f}")
+print(f"SDKP Measured Time Dilation: {experiment_1['measured_time_dilation']:.4f}")
